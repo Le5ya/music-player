@@ -1,0 +1,28 @@
+.header {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+.header__container {
+  max-width: 1240px;
+  padding: 9px 30px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+.header__logo {
+  margin-right: 94px;
+}
+.header__search {
+  flex-grow: 1;
+  margin-right: auto;
+ 
+
+}
+.header-favotite__btn {
+  color: #fff;
+}
+.header-favotite__btn:hover {
+  color: tomato;
+  line-height: 0;
+  transition: color .2s easy-in-out ;
+}
