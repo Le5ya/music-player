@@ -39,6 +39,7 @@
   background-image: url('../img/stop.svg');
   
 }
+
 .player__icon_prev {
   background-image: url('../img/prev.svg');
   
@@ -46,6 +47,10 @@
 }
 .player__icon_pause {
   background-image: url('../img/pause-o.svg');
+  
+}
+.player__icon_play {
+  background-image: url('../img/play.svg');
   
 }
 

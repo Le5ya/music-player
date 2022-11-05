@@ -4,7 +4,7 @@ const dataMusic = [
     artist: 'The weeknd',
     track: 'Save your tears',
     poster: 'img/photo-1.jpg',
-    mp3: 'The Weeknd-Save Your Tears.mp3',
+    mp3: 'audio/The Weeknd - Save Your Tears.mp3',
   },
   {
     id: '2',
@@ -84,17 +84,20 @@ const dataMusic = [
     mp3: 'audio/Madonna - Frozen.mp3',
   },
 ];
+// dataMusic.forEach((item) => console.log(item.mp3)); 
+// dataMusic.forEach((item) => console.log(item.id, item.mp3)); 
 
 const audio = new Audio();
+
+const player = document.querySelector('.player');
 const tracksCard = document.getElementsByClassName('track');
 const catalogContainer = document.querySelector('.catalog__container');
-const player = document.querySelector('.player');
 const pauseBtn = document.querySelector('.player__controller_pause');
 const stopBtn = document.querySelector('.player__controller_stop');
-const prevBtn = document.querySelector('.player__controller_prev');
-const nextBtn = document.querySelector('.player__controller_next');
-const likeBtn = document.querySelector('.player__controller_like');
-const muteBtn = document.querySelector('.player__controller_mute');
+// const prevBtn = document.querySelector('.player__controller_prev');
+// const nextBtn = document.querySelector('.player__controller_next');
+// const likeBtn = document.querySelector('.player__controller_like');
+// const muteBtn = document.querySelector('.player__controller_mute');
 
 const catalogAddBtn = document.createElement('button');
 catalogAddBtn.classList.add('catalog__btn-add');
@@ -110,42 +113,58 @@ catalogAddBtn.innerHTML = `
 
 const pausePlayer = () => {
   const trackActive = document.querySelector('.track_active');
+  if(audio.paused) {
+    audio.play();
+    pauseBtn.classList.remove('player__icon_play');
+    trackActive.classList.remove('track-pause');
+  } else {
+    audio.pause();
+    pauseBtn.classList.add('player__icon_play');
+    trackActive.classList.add('track-pause');
+  }
 }
 
 const playMusic = event => {
   event.preventDefault();
   const trackActive = event.currentTarget;
-
   if(trackActive.classList.contains('track_active')) {
-    pausePlayer(trackFctive);
+    pausePlayer(trackActive);
     return
   }
-  let i = 0;
+  // let i = 0;
   const id = trackActive.dataset.idTrack;
 
-  const track = dataMusic.find((item, index) => {
-    i = index;
-    return id === item.id;
-  });
+  const track = dataMusic.find(item => id === item.id);
 
-  audio.src = track.id
+  audio.src = track.mp3
 
-  audio.src = trackActive.dataset.track;
+  // const track = dataMusic.find((item, index) => {
+  //   i = index;
+  //   return id === item.id;
+  // });
+  // audio.src = track.id;
+  // audio.src = trackActive.dataset.track;
+  // audio.src = event.currentTarget.dataset.track;
+
+  //  }
+  // audio.src = trackActive.dataset.track;
   audio.play();
   pauseBtn.classList.remove('player__icon_play');
   player.classList.add('player_active');
 
-  const prevTrack = i == 0 ? dataMusic.lehgth - 1 : i -1;
+  for(let i = 0; i < tracksCard.length; i++) {
+    tracksCard[i].classList.remove('track_active'); 
+   }
+   
+  trackActive.classList.add('track_active');
+
+  const prevTrack = i === 0 ? dataMusic.lehgth - 1 : i -1;
   const nextTrack = i + 1 ===dataMusic.length ? 0 : i + 1;
   prevBtn.dataset.idTrack = dataMusic[prevTrack].id;
   nextBtn.dataset.idTrack = dataMusic[nextTrack].id;
-
-  for(let i = 0; i < tracksCard.length; i++) {
-    tracksCard[i].classList.remove('track_active'); 
-  }
-  trackActive.classList.add('track_active');
-}
-
+} 
+// 1111!!!!
+  
 const addHandlerTrack = () => {
   for(let i = 0; i < tracksCard.length; i++) {
   tracksCard[i].addEventListener('click', playMusic); 
@@ -159,7 +178,7 @@ if(audio.paused) {
   audio.pause();
   pauseBtn.classList.add('player__icon_play');
 }
-})
+ })
 stopBtn.addEventListener('click', () => {
   player.classList.remove('player_active');
   audio.src = '';
@@ -167,7 +186,8 @@ stopBtn.addEventListener('click', () => {
 
 
 
-const createCard = (data) => {
+
+ const createCard = (data) => {
   const card = document.createElement('a');
   card.href = '#';
   card.classList.add('catalog__item', 'track');
@@ -185,39 +205,39 @@ const createCard = (data) => {
     <p class="track-info__artist">${data.artist}</p>
   </div>
   `;
-  return card;
-}
+   return card;
+ }
 
-const renderCatalog = (dataList) => {
+ const renderCatalog = (dataList) => {
   catalogContainer.textContent = '';
   const listCards = dataList.map(createCard);
-  // console.log(listCards);
   catalogContainer.append(...listCards);
   addHandlerTrack();
-};
+ };
 
 const checkCount = (i = 1) => {
-  tracksCard[0]
-  if(catalogContainer.clientHeight> tracksCard[0].clientHeight * 3) {
-    tracksCard[tracksCard.length - 1].style.display = 'none';
+   tracksCard[0]
+  if(catalogContainer.clientHeight > tracksCard[0].clientHeight * 3) {
+    tracksCard[tracksCard.length - i].style.display = 'none';
     checkCount(i + 1);
-  } else if(i !== 1) {
+   } 
+  else if(i !== 1) {
     catalogContainer.append(catalogAddBtn);
     
   };
 
 };
 
-const init = () => {
+ const init = () => {
   renderCatalog(dataMusic);
   checkCount();
 
-  catalogAddBtn.addEventListener('click', () => {
-    [...trackCard].forEach((trackCard) => {
-      trackCard.style.display = '';
-      // catalogAddBtn.remove();
-    })
-  })
-};
-init();
+  // catalogAddBtn.addEventListener('click', () => {
+  //   [...tracksCard].forEach((trackCard) => {
+  //     trackCard.style.display = '';
+  //     catalogAddBtn.remove();
+  //   })
+  // })
+ };
+ init();
 
