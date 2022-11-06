@@ -140,29 +140,29 @@ const playMusic = event => {
     return id === item.id;
   });
 
-  audio.src = track.mp3
-  // audio.src = track.id;
-  // audio.src = trackActive.dataset.track;
-  // audio.src = event.currentTarget.dataset.track;
+  audio.src = track.mp3;
 
-  //  }
-  // audio.src = trackActive.dataset.track;
   audio.play();
+
   pauseBtn.classList.remove('player__icon_play');
   player.classList.add('player_active');
 
-  const prevTrack = i === 0 ? dataMusic.lehgth - 1 : i -1;
-  const nextTrack = i + 1 ===dataMusic.length ? 0 : i + 1;
+  const prevTrack = i === 0 ? dataMusic.length - 1 : i -1;
+  const nextTrack = i + 1 === dataMusic.length ? 0 : i + 1;
   prevBtn.dataset.idTrack = dataMusic[prevTrack].id;
   nextBtn.dataset.idTrack = dataMusic[nextTrack].id;
 
 
 
   for(let i = 0; i < tracksCard.length; i++) {
-    tracksCard[i].classList.remove('track_active'); 
+    if(id ===tracksCard[i].dataset.idTrack) {
+      tracksCard[i].classList.add('track_active');
+    } else {
+      tracksCard[i].classList.remove('track_active');
+    }
+     
    }
    
-  trackActive.classList.add('track_active');
 
   
 } 
@@ -230,6 +230,9 @@ const checkCount = (i = 1) => {
   };
 
 };
+
+prevBtn.addEventListener('click', playMusic);
+nextBtn.addEventListener('click', playMusic);
 
  const init = () => {
   renderCatalog(dataMusic);
