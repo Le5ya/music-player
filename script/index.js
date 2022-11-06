@@ -94,10 +94,10 @@ const tracksCard = document.getElementsByClassName('track');
 const catalogContainer = document.querySelector('.catalog__container');
 const pauseBtn = document.querySelector('.player__controller_pause');
 const stopBtn = document.querySelector('.player__controller_stop');
-// const prevBtn = document.querySelector('.player__controller_prev');
-// const nextBtn = document.querySelector('.player__controller_next');
-// const likeBtn = document.querySelector('.player__controller_like');
-// const muteBtn = document.querySelector('.player__controller_mute');
+const prevBtn = document.querySelector('.player__controller_prev');
+const nextBtn = document.querySelector('.player__controller_next');
+const likeBtn = document.querySelector('.player__controller_like');
+const muteBtn = document.querySelector('.player__controller_mute');
 
 const catalogAddBtn = document.createElement('button');
 catalogAddBtn.classList.add('catalog__btn-add');
@@ -131,17 +131,16 @@ const playMusic = event => {
     pausePlayer(trackActive);
     return
   }
-  // let i = 0;
+  let i = 0;
   const id = trackActive.dataset.idTrack;
 
-  const track = dataMusic.find(item => id === item.id);
+  // const track = dataMusic.find(item => id === item.id);
+  const track = dataMusic.find((item, index) => {
+    i = index;
+    return id === item.id;
+  });
 
   audio.src = track.mp3
-
-  // const track = dataMusic.find((item, index) => {
-  //   i = index;
-  //   return id === item.id;
-  // });
   // audio.src = track.id;
   // audio.src = trackActive.dataset.track;
   // audio.src = event.currentTarget.dataset.track;
@@ -152,16 +151,20 @@ const playMusic = event => {
   pauseBtn.classList.remove('player__icon_play');
   player.classList.add('player_active');
 
+  const prevTrack = i === 0 ? dataMusic.lehgth - 1 : i -1;
+  const nextTrack = i + 1 ===dataMusic.length ? 0 : i + 1;
+  prevBtn.dataset.idTrack = dataMusic[prevTrack].id;
+  nextBtn.dataset.idTrack = dataMusic[nextTrack].id;
+
+
+
   for(let i = 0; i < tracksCard.length; i++) {
     tracksCard[i].classList.remove('track_active'); 
    }
    
   trackActive.classList.add('track_active');
 
-  const prevTrack = i === 0 ? dataMusic.lehgth - 1 : i -1;
-  const nextTrack = i + 1 ===dataMusic.length ? 0 : i + 1;
-  prevBtn.dataset.idTrack = dataMusic[prevTrack].id;
-  nextBtn.dataset.idTrack = dataMusic[nextTrack].id;
+  
 } 
 // 1111!!!!
   
@@ -180,8 +183,8 @@ if(audio.paused) {
 }
  })
 stopBtn.addEventListener('click', () => {
-  player.classList.remove('player_active');
   audio.src = '';
+  player.classList.remove('player_active');
 });
 
 
@@ -232,12 +235,12 @@ const checkCount = (i = 1) => {
   renderCatalog(dataMusic);
   checkCount();
 
-  // catalogAddBtn.addEventListener('click', () => {
-  //   [...tracksCard].forEach((trackCard) => {
-  //     trackCard.style.display = '';
-  //     catalogAddBtn.remove();
-  //   })
-  // })
+  catalogAddBtn.addEventListener('click', () => {
+    [...tracksCard].forEach((trackCard) => {
+      trackCard.style.display = '';
+      catalogAddBtn.remove();
+    })
+  })
  };
  init();
 

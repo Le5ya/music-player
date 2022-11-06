@@ -20,10 +20,10 @@
  
 
 }
-.header-favotite__btn {
+.header-favorite__btn {
   color: #fff;
 }
-.header-favotite__btn:hover {
+.header-favorite__btn:hover {
   color: tomato;
   line-height: 0;
   transition: color .2s easy-in-out ;
