@@ -91,8 +91,6 @@ const favoriteList = localStorage.getItem('favorite')
 : []
 
 const audio = new Audio();
-
-
 const headerLogo = document.querySelector('.header__logo');
 const player = document.querySelector('.player');
 const favoriteBtn = document.querySelector('.header-favorite__btn');
@@ -107,6 +105,11 @@ const muteBtn = document.querySelector('.player__controller_mute');
 const playerVolumeInput = document.querySelector('.player__volume-input');
 
 const catalogAddBtn = document.createElement('button');
+const playerProgressInput = document.querySelector('.player__progress-input');
+
+const playerTimePassed=document.querySelector('.player__time-passed');
+const playerTimeTotal=document.querySelector('.player__time-total');
+
 catalogAddBtn.classList.add('catalog__btn-add');
 
 catalogAddBtn.innerHTML = `
@@ -246,9 +249,22 @@ const checkCount = (i = 1) => {
   };
 
 };
+const updateTime = () => {
+ currentTime = audio.currentTime;
+ duration = audio.duration;
+ const progress = (currentTime / duration) * playerProgressInput.max;
+ playerProgressInput.value = progress ? progress : 0
+//  console.log('progress', progress);
+const minutesPassed = Math.floor(currentTime / 60) || '0'; 
+const secondsPassed = Math.floor(currentTime % 60) || '0'; 
+const minutesDuration = Math.floor(duration / 60) || '0'; 
+const secondsDuration = Math.floor(duration % 60) || '0';
 
-prevBtn.addEventListener('click', playMusic);
-nextBtn.addEventListener('click', playMusic);
+playerTimePassed.textContent = `${minutesPassed}:${secondsPassed < 10 ? '0' + secondsPassed : secondsPassed}`;
+playerTimeTotal.textContent = `${minutesPassed}:${secondsPassed < 10 ? '0' + secondsPassed : secondsPassed}`;
+}
+
+
 
  const init = () => {
   audio.volume = localStorage.getItem('volume') || 1;
@@ -262,6 +278,17 @@ nextBtn.addEventListener('click', playMusic);
       catalogAddBtn.remove();
     });
   });
+  prevBtn.addEventListener('click', playMusic);
+  nextBtn.addEventListener('click', playMusic);
+  audio.addEventListener('timeupdate', updateTime);
+
+  playerProgressInput.addEventListener('change', () => {
+    const progress = playerProgressInput.value;
+    audio.currentTime = (progress / playerProgressInput.max) * audio.duration;
+    // console.log('progress:', progress);
+  });
+
+
 
   favoriteBtn.addEventListener('click', () => {
     const data = dataMusic.filter((item) => favoriteList.includes(item.id))
@@ -304,4 +331,7 @@ nextBtn.addEventListener('click', playMusic);
   })
  };
  init();
+ 
+ 
+
 
